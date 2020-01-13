@@ -145,3 +145,15 @@ X-ray computed tomography (CT) has experienced an explosion of technological dev
     1. dImgX, dImgY `[mm; (float, +)]` : 1, 1
     2. nImgX, nImgY `[element; (int, +)]` : 512, 512
     3. dOffsetImgX, dOffsetImgY `[element; (float, +-)]` : 0, 0
+
+
+## Execution Time
+* While Matlab is optimized to calculate the Matrix operation, it is calculated by pixel operation to match the Equations explicitly. 
+* Therefore, the execution time is slow as shown in a table below.
+
+| Operation  | Execution time | Remark |
+| :---------:| :------------: | :----: |
+| Projection | about 16.50 sec | *ray-driven* |
+| (a) Filtering | about 2.50 sec | *convolution* |
+| (b) Filtering | - | *zero-padding + FFT*|
+| Backprojection | about 16.50 sec | *pixel-driven* |
