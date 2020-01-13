@@ -21,8 +21,8 @@ X-ray computed tomography (CT) has experienced an explosion of technological dev
 1. Setup a system parameters using `./include/params.h`
 
 2. Click `projection_clang.cpp`.
-3. To compile this file, push `cmd + shift + B` and click `Bulid for C++`.
-4. To execute this compiled file, push `cmd + shift + B` and click `Execute`.
+3. To compile this file, push `cmd (or ctrl)+ shift + B` and click `Bulid for C++`.
+4. To execute this compiled file, push `cmd (or ctrl) + shift + B` and click `Execute`.
 
 5. Repeat `2 ~ 4` for `filtering_with_conv1d_clang.cpp` and `backprojection_clang.cpp`, sequentially.
 
