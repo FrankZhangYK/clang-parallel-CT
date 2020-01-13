@@ -10,7 +10,7 @@ X-ray computed tomography (CT) has experienced an explosion of technological dev
               
 ## Notice
 * `filtering_with_fft1d_clang.cpp` dose **not work**. 
-* I tried to include fftw3 lib in VS code but failed to include fftw3 library.
+* I tried to include fftw3 library in VS code but failed to include fftw3 library.
 * If anyone can include the fftw3 library, please send me a message :).
 
 ## Implementation
@@ -18,10 +18,10 @@ X-ray computed tomography (CT) has experienced an explosion of technological dev
 * Change `.vscode/c_cpp_properties.json` to either `Mac iOS` or `Windows x64` depending on your OS.
 
 ## Execution
-1. Setup a system parameters using `./include/params.h`
+1. Setup the system parameters using `./include/params.h`
 
 2. Click `projection_clang.cpp`.
-3. To compile this file, push `cmd (or ctrl)+ shift + B` and click `Bulid for C++`.
+3. To compile this file, push `cmd (or ctrl)+ shift + B` and click `Build for C++`.
 4. To execute this compiled file, push `cmd (or ctrl) + shift + B` and click `Execute`.
 
 5. Repeat `2 ~ 4` for `filtering_with_conv1d_clang.cpp` and `backprojection_clang.cpp`, sequentially.
