@@ -14,7 +14,7 @@ X-ray computed tomography (CT) has experienced an explosion of technological dev
 * If anyone can include the fftw3 library, please send me a message :).
 
 ## Implementation
-* This code is implemented by VS code.
+* This code is implemented by `VS code`.
 * Change `c_cpp_properties.json` to either` Mac iOS` or `Windows x64` depending on your OS.
 
 ## System parameters
