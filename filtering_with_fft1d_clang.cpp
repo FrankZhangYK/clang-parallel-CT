@@ -10,9 +10,13 @@
  *
  */
 
-#include "mex.h"
 #include "./include/util.h"
+#include "./params.h"
 #include "./include/fftw3.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <math.h>
 
 using namespace std;
@@ -23,79 +27,31 @@ void    runFourierTransform1d(float *pout, float *pin,
                             float *pdImg, int *pnImg, float *pdOffsetImg);
 
 
-void mexFunction (int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
+int main()
 {
-    float   *pin    = (float *) mxGetData(prhs[0]);
-    
     /*
-     *  X-ray CT System parameters
-     *
-     * dView	: Gap between view_(k) - view_(k-1) [degree (float)]
-     * nView	: # of the views [element (uint)]
-     * DSO      : Distance from the Source to the Object    [mm (float)]
-     * DSD      : Distance from the Source to the Detector  [mm (float)]
+     * Data Load
+    */
+
+    char pchFile[128];
+    FILE *pfid;
+
+    float   *pin    = (float *) malloc(sizeof(float)*pnDct[Y]*pnDct[X]*nView);
+    memset(pin, 0, sizeof(float)*pnDct[Y]*pnDct[X]*nView);
+
+    sprintf(pchFile, "prj_dct%d_view%d.raw", pnDct[X], nView);
+    pfid = fopen(pchFile, "rb");
+
+    fread(pin, sizeof(float), pnDct[Y]*pnDct[X]*nView, pfid);
+    fclose (pfid); pfid = 0;
+
+    /*
+     *  Filtered sinogram data
      */
     
-    float   dView           = (float)   mxGetScalar(prhs[1]);
-    int     nView           = (int)     mxGetScalar(prhs[2]);
-    float   DSO             = (float)   mxGetScalar(prhs[3]);
-    float   DSD             = (float)   mxGetScalar(prhs[4]);
-    
-    /*
-     *  X-ray CT Detector parameters
-     *
-     * pdDct[2]         : Detector pitch [mm (float)]
-     * pnDct[2]         : Number of detector [element (uint)]
-     * pdOffsetDct[2]	: Index of shifted detector [element (float; +, -)]
-     * -----------------------------------------------------
-     * '*Dct[Y]' parameters are only used when 3D CT system. 
-     * -----------------------------------------------------
-     */
-    
-    float   pdDct[2];
-    pdDct[Y]        = (float)   mxGetScalar(prhs[5]);
-    pdDct[X]        = (float)   mxGetScalar(prhs[6]);
-    
-    int     pnDct[2];
-    pnDct[Y]        = (int)     mxGetScalar(prhs[7]);
-    pnDct[X]        = (int)     mxGetScalar(prhs[8]);
-    
-    float   pdOffsetDct[2];
-    pdOffsetDct[Y]	= (float)   mxGetScalar(prhs[9]);
-    pdOffsetDct[X]	= (float)   mxGetScalar(prhs[10]);
-    
-    /*
-     *  Image Object parameters
-     *
-     *  pdImg[3]        : The resolution of the element of the image voxel
-     *  pnImg[3]        : The number of the element of the the image voxel
-     *  pdOffsetImg[3]  : The offset (shift) from the centor of the image
-     * ----------------------------------------------------
-     * '*ImgZ' parameters are only used when 3D CT system. 
-     * ----------------------------------------------------
-     */
-    
-    float   pdImg[3];
-    pdImg[Y]        = (float)   mxGetScalar(prhs[11]);
-    pdImg[X]        = (float)   mxGetScalar(prhs[12]);
-    pdImg[Z]        = (float)   mxGetScalar(prhs[13]);
-    
-    int     pnImg[3];
-    pnImg[Y]        = (int)     mxGetScalar(prhs[14]);
-    pnImg[X]        = (int)     mxGetScalar(prhs[15]);
-    pnImg[Z]        = (int)     mxGetScalar(prhs[16]);
-    
-    float   pdOffsetImg[3];
-    pdOffsetImg[Y]	= (float)   mxGetScalar(prhs[17]);
-    pdOffsetImg[X]	= (float)   mxGetScalar(prhs[18]);
-    pdOffsetImg[Z]	= (float)   mxGetScalar(prhs[19]);
-    
-    /*
-     *  Sinogram data
-     */
-    plhs[0]                 = mxCreateNumericMatrix(pnDct[X], nView, mxSINGLE_CLASS, mxREAL);
-    float   *pout           = (float *) mxGetData(plhs[0]);
-    
+    float   *pout   = (float *) malloc(sizeof(float)*pnDct[Y]*pnDct[X]*nView);
+    memset(pout, 0, sizeof(float)*pnDct[Y]*pnDct[X]*nView);
+
     /*
      *  Run filtering operator
      */
@@ -103,8 +59,17 @@ void mexFunction (int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
                         DSO, DSD, dView, nView,
                         pdDct, pnDct, pdOffsetDct,
                         pdImg, pnImg, pdOffsetImg);
-    
-    return ;
+        
+    sprintf(pchFile, "flt_prj_dct%d_view%d.raw", pnDct[X], nView);
+    pfid = fopen(pchFile, "wb");
+
+    fwrite(pout, sizeof(float), pnDct[Y]*pnDct[X]*nView, pfid);
+    fclose(pfid); pfid = 0;
+
+    free(pin);  pin = 0;
+    free(pout); pout = 0;
+
+    return 0;
 }
 
 void    runFourierTransform1d(float *pout, float *pin,

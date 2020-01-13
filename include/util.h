@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <math.h>
 
 using namespace std;
@@ -9,6 +6,7 @@ using namespace std;
  *
  */
 #define PI          3.14159265359f
+
 #define Y           0
 #define X           1
 #define Z           2
