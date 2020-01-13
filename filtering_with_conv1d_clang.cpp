@@ -1,5 +1,5 @@
 #include "./include/util.h"
-#include "./params.h"
+#include "./include/params.h"
 
 #include <stdio.h>
 #include <stdlib.h>

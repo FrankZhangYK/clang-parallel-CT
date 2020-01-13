@@ -14,8 +14,7 @@
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
                 "-L./lib",
-                "-L./include",
-                "-llibfftw3f-3.lib"
+                "-I./include"
             ],
             "group": "build",
 
