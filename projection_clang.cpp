@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
 
 using namespace std;
 
@@ -20,8 +21,17 @@ void    runProjection(float *pout, float *pin,
  * Projection operator is implemented using ray-driven method
 */
 
+
+// Execution time check 
+
+clock_t start, end;
+double result;
+
+
 int main ()
 {
+    start = clock();
+
     /*
      * Data Load
     */
@@ -62,6 +72,11 @@ int main ()
 
     free(pin);  pin = 0;
     free(pout); pout = 0;
+
+    end = clock();
+
+    result = (double)(end - start);
+    printf("%.4f seconds.\n", result/CLOCKS_PER_SEC);
     
     return 0;
 }

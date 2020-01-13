@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
 
 using namespace std;
 
@@ -20,8 +21,17 @@ void    runBackprojection(float *pout, float *pin,
  * Backprojection operator is implemented using pixel-driven method
 */
 
-int main()
+
+// Execution time check 
+
+clock_t start, end;
+double result;
+
+
+int main ()
 {
+    start = clock();
+
     /*
      * Data Load
     */
@@ -32,7 +42,7 @@ int main()
     float   *pin    = (float *) malloc(sizeof(float)*pnDct[Y]*pnDct[X]*nView);
     memset(pin, 0, sizeof(float)*pnDct[Y]*pnDct[X]*nView);
 
-    sprintf(pchFile, "flt_prj_view%d_dct%d.raw", nView, pnDct[X]);
+    sprintf(pchFile, "flt_view%d_dct%d.raw", nView, pnDct[X]);
     pfid = fopen(pchFile, "rb");
 
     fread(pin, sizeof(float), pnDct[Y]*pnDct[X]*nView, pfid);
@@ -60,6 +70,13 @@ int main()
 
     free(pin);  pin = 0;
     free(pout); pout = 0;
+
+
+    end = clock();
+
+    result = (double)(end - start);
+    printf("%.4f seconds.\n", result/CLOCKS_PER_SEC);
+
 
     return 0;
 }
