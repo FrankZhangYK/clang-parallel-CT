@@ -12,9 +12,7 @@
             "args": [
                 "${file}",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}",
-                "-L./lib",
-                "-I./include"
+                "${fileDirname}/${fileBasenameNoExtension}"
             ],
             "group": "build",
 

@@ -39,7 +39,7 @@ int main()
     float   *pin    = (float *) malloc(sizeof(float)*pnDct[Y]*pnDct[X]*nView);
     memset(pin, 0, sizeof(float)*pnDct[Y]*pnDct[X]*nView);
 
-    sprintf(pchFile, "prj_dct%d_view%d.raw", pnDct[X], nView);
+    sprintf(pchFile, "prj_view%d_dct%d.raw", nView, pnDct[X]);
     pfid = fopen(pchFile, "rb");
 
     fread(pin, sizeof(float), pnDct[Y]*pnDct[X]*nView, pfid);
@@ -55,12 +55,16 @@ int main()
     /*
      *  Run filtering operator
      */
-    runFourierTransform1d(pout, pin,
-                        DSO, DSD, dView, nView,
-                        pdDct, pnDct, pdOffsetDct,
-                        pdImg, pnImg, pdOffsetImg);
+    // runFourierTransform1d(pout, pin,
+    //                     DSO, DSD, dView, nView,
+    //                     pdDct, pnDct, pdOffsetDct,
+    //                     pdImg, pnImg, pdOffsetImg);
+    
+    printf("I'm sorry for the FFT version of filtering not working.\n");
+    printf("I tried to include fftw3 lib in VS code but failed to include fftw3 library.\n");
+    printf("If anyone can include the fftw3 library, please send me a message :).");
         
-    sprintf(pchFile, "flt_prj_dct%d_view%d.raw", pnDct[X], nView);
+    sprintf(pchFile, "flt_view%d_dct%d.raw", nView, pnDct[X]);
     pfid = fopen(pchFile, "wb");
 
     fwrite(pout, sizeof(float), pnDct[Y]*pnDct[X]*nView, pfid);

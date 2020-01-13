@@ -8,7 +8,7 @@
 * DSD      : Distance from the Source to the Detector  [mm (float)]
 */
 float   dAngle          = 360.0f;
-int     nView           = 360;
+int     nView           = 720;
 float   dView           = dAngle/nView;
 float   DSO             = 400.0f;
 float   DSD             = 800.0f;
@@ -25,7 +25,7 @@ float   DSD             = 800.0f;
 */
 
 float   pdDct[2]        = {1.0f, 0.7f};
-int     pnDct[2]        = {1, 400};
+int     pnDct[2]        = {1, 1024};
 float   pdOffsetDct[2]  = {0.0f, 0.0f};
 
 /*
@@ -40,5 +40,5 @@ float   pdOffsetDct[2]  = {0.0f, 0.0f};
 */
 
 float   pdImg[3]        = {1, 1, 1};
-int     pnImg[3]        = {256, 256, 1};
+int     pnImg[3]        = {512, 512, 1};
 float   pdOffsetImg[3]  = {0.0f, 0.0f, 0.0f};

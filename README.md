@@ -8,18 +8,19 @@
 ### Abstract
 X-ray computed tomography (CT) has experienced an explosion of technological development for a quarter century. Six years after the second edition of Computed Tomography, this third edition captures the most recent advances in technology and clinical applications. New to this edition are descriptions of iterative reconstruction, statistical reconstruction, methodologies used to model the CT systems, and the searching methodologies for optimal solutions. A new section on 3D printing introduces approaches by early adopters in the area. Also added is a description and discussion of the size-specific dose estimate, an index that attempts to more accurately reflect the dose absorption of specific-sized patients. The coverage of dual-energy CT has been significantly expanded to include its background, theoretical development, and clinical applications.
               
-## Installation
-* Before execute `demo_parallelbeam_ct.m`, execute `mex_compile.m` to compile the mex files.
-      
-## Execution Language
-* If execute the simulation based on `MATLAB ver.`,
+## Notice
+* `filtering_with_fft1d_clang.cpp` dose **not work**. 
+* I tried to include fftw3 lib in VS code but failed to include fftw3 library.
+* If anyone can include the fftw3 library, please send me a message :).
 
-        param.device='matlab';
+## Implementation
+* This code is implemented by VS code.
+* Change `c_cpp_properties.json` to either` Mac iOS` or `Windows x64` depending on your OS.
 
-* If execute the simulation based on `C/C++ ver.`,
+## System parameters
+* In `./include/params.h`, the system parameters were written. 
+* Therefore, to change the system setting, modify the `./include/params.h`.
 
-        param.device='clang';
-   
 ## Projection
 * Projection operator is implemented based on Ch.3 Equations (3.5) & (3.6).
 * `Ray-driven method` is applied to Projection operator.
@@ -49,7 +50,49 @@ X-ray computed tomography (CT) has experienced an explosion of technological dev
 
     * Ch.3 Equation (3.22): `Backprojection`
         * ![eq-backprojection](http://latex.codecogs.com/gif.latex?%5Cdpi%7B150%7D%20%5Cbg_white%20%5Cfn_cm%20%5Clarge%20f%28x%2C%20y%29%20%3D%5Cint_%7B0%7D%5E%7B%5Cpi%7Dg%28x%20%5Ccos%28%5Ctheta%29%20&plus;%20y%5Csin%28%5Ctheta%29%29d%5Ctheta)
-        
+
+## Display
+* To display raw files, I used a `python` libraries such as `numpy` and `matplotlib`.
+* This script `(display_images.py)` is attached to this project.
+
+    ```python
+    import numpy as np
+    import matplotlib.pyplot as plt
+    
+    img = np.fromfile('input512.raw', dtype=np.float32).reshape(512,512).transpose()
+    rec = np.fromfile('output512.raw', dtype=np.float32).reshape(512,512).transpose()
+    prj = np.fromfile('prj_view720_dct1024.raw', dtype=np.float32).reshape(720,1024).transpose()
+    flt = np.fromfile('flt_view720_dct1024.raw', dtype=np.float32).reshape(720,1024).transpose()
+    
+    plt.subplot(221)
+    plt.imshow(img, cmap='gray', vmin=0, vmax=1)
+    plt.axis('image')
+    plt.title('Ground truth')
+    plt.xlabel('X-axis')
+    plt.ylabel('Y-axis')
+    
+    plt.subplot(222)
+    plt.imshow(rec, cmap='gray', vmin=0, vmax=1)
+    plt.axis('image')
+    plt.title('Reconstruction')
+    plt.xlabel('X-axis')
+    plt.ylabel('Y-axis')
+    
+    plt.subplot(223)
+    plt.imshow(prj, cmap='gray', vmin=0, vmax=150)
+    plt.title('Projection')
+    plt.xlabel('Angle')
+    plt.ylabel('Detector')
+    
+    plt.subplot(224)
+    plt.imshow(flt, cmap='gray', vmin=-3, vmax=3)
+    plt.title('Filtration')
+    plt.xlabel('Angle')
+    plt.ylabel('Detector')
+  
+    plt.show()
+    ```
+
 ## Parameters
 * X-ray CT System parameters
     1. dAngle `[degree; (float, +)]` : Rotational range of X-ray source 
@@ -76,37 +119,18 @@ X-ray computed tomography (CT) has experienced an explosion of technological dev
 
 * X-ray CT System parameters
     1. dAngle `[degree; (float, +)]` : 360 
-    2. nView `[element; (int, +)]` : 360 
-    3. dView `[degree; (float, +)]` : 1
+    2. nView `[element; (int, +)]` : 720 
+    3. dView `[degree; (float, +)]` : 0.5
     4. DSO `[mm; (float, +)]` : 400
     5. DSD `[mm; (float, +)]` : 800 
 
 * X-ray detector parameters
     1. dDctX `[mm; (float, +)]` : 0.7
-    2. nDctX `[element; (int, +)]` : 400
-    3. dOffsetDctX `[element; (int, +-)]` : 30
-    4. compute_filtering `['convolution', 'fft'; (string)]` : 'fft'
+    2. nDctX `[element; (int, +)]` : 1024
+    3. dOffsetDctX `[element; (int, +-)]` : 0
+    4. compute_filtering `['conv', 'fft'; (string)]` : 'conv'
     
 * Object parameters 
     1. dImgX, dImgY `[mm; (float, +)]` : 1, 1
-    2. nImgX, nImgY `[element; (int, +)]` : 256, 256
+    2. nImgX, nImgY `[element; (int, +)]` : 512, 512
     3. dOffsetImgX, dOffsetImgY `[element; (float, +-)]` : 0, 0
-
-## Execution Time
-* Execution time for `MATLAB ver.`
-
-    | Operation  | Execution time | Remark |
-    | :---------:| :------------: | :----: |
-    | Projection | about 1000 sec | *ray-driven* |
-    | (a) Filtering | about 0.025 sec | *convolution* |
-    | (b) Filtering | about 0.05 sec | *zero-padding + FFT*|
-    | Backprojection | about 300 sec | *pixel-driven* |
-
-* Execution time for `C/C++ ver.`
-
-    | Operation  | Execution time | Acceleration  |
-    | :---------:| :------------: | :----: |
-    | Projection | about 0.500 sec | *x2000*   |
-    | (a) Filtering | about 0.05 sec | *x0.5* |
-    | (b) Filtering | about 0.01 sec | *x5*|
-    | Backprojection | about 1 sec | *x300* |

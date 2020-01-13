@@ -54,7 +54,7 @@ int main ()
                     pdDct, pnDct, pdOffsetDct,
                     pdImg, pnImg, pdOffsetImg);
 
-    sprintf(pchFile, "prj_dct%d_view%d.raw", pnDct[X], nView);
+    sprintf(pchFile, "prj_view%d_dct%d.raw", nView, pnDct[X]);
     pfid = fopen(pchFile, "wb");
 
     fwrite(pout, sizeof(float), pnDct[Y]*pnDct[X]*nView, pfid);

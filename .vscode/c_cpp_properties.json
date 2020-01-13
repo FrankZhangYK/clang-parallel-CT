@@ -1,3 +1,4 @@
+// Configuration for Mac iOS
 {
     "configurations": [
         {
@@ -17,3 +18,22 @@
     ],
     "version": 4
 }
+
+// Configuration for Windows x64
+//{
+//    "configurations": [
+//        {
+//            "name": "x64",
+//            "includePath": [
+//                "${workspaceFolder}/**"
+//            ],
+//            "defines": [],
+//            "compilerPath": "\"C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/g++.exe\"",
+//            "cStandard": "c11",
+//            "cppStandard": "c++17",
+//            "intelliSenseMode": "gcc-x64",
+//            "compilerArgs": []
+//        }
+//    ],
+//    "version": 4
+//}

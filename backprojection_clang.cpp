@@ -32,7 +32,7 @@ int main()
     float   *pin    = (float *) malloc(sizeof(float)*pnDct[Y]*pnDct[X]*nView);
     memset(pin, 0, sizeof(float)*pnDct[Y]*pnDct[X]*nView);
 
-    sprintf(pchFile, "flt_prj_dct%d_view%d.raw", pnDct[X], nView);
+    sprintf(pchFile, "flt_prj_view%d_dct%d.raw", nView, pnDct[X]);
     pfid = fopen(pchFile, "rb");
 
     fread(pin, sizeof(float), pnDct[Y]*pnDct[X]*nView, pfid);
