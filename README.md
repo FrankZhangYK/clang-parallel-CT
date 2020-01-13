@@ -53,7 +53,7 @@ X-ray computed tomography (CT) has experienced an explosion of technological dev
 
 ## Display
 * To display raw files, I used a `python` libraries such as `numpy` and `matplotlib`.
-* This script `(display_images.py)` is attached to this project.
+* This script (`display_images.py`) is attached to this project.
 
     ```python
     import numpy as np
