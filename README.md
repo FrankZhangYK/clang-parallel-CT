@@ -15,7 +15,7 @@ X-ray computed tomography (CT) has experienced an explosion of technological dev
 
 ## Implementation
 * This code is implemented by `VS code`.
-* Change `c_cpp_properties.json` to either` Mac iOS` or `Windows x64` depending on your OS.
+* Change `.vscode/c_cpp_properties.json` to either` Mac iOS` or `Windows x64` depending on your OS.
 
 ## System parameters
 * In `./include/params.h`, the system parameters were written. 
