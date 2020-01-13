@@ -148,8 +148,6 @@ X-ray computed tomography (CT) has experienced an explosion of technological dev
 
 
 ## Execution Time
-* While Matlab is optimized to calculate the Matrix operation, it is calculated by pixel operation to match the Equations explicitly. 
-* Therefore, the execution time is slow as shown in a table below.
 
 | Operation  | Execution time | Remark |
 | :---------:| :------------: | :----: |
